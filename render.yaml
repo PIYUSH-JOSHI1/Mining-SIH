@@ -9,7 +9,7 @@ services:
       - key: FLASK_ENV
         value: production
       - key: SECRET_KEY
-        generateValue: true
+        value: lca_mining_circ_ai_2024_secure_key_9x7z3m8q5w2e1r4t6y
       - key: PYTHONPATH
         value: /opt/render/project/src
     regions:
