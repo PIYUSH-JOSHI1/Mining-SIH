@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI-Driven LCA Tool - Ministry of Mines{% endblock %}</title>
+    <meta name="description" content="AI-Driven Life Cycle Assessment Tool for Advancing Circularity and Sustainability in Metallurgy and Mining - Government of India">
+    <meta name="keywords" content="LCA, Life Cycle Assessment, Metallurgy, Mining, Sustainability, Ministry of Mines, India">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'gov-blue': '#1e40af',
+                        'gov-green': '#16a34a',
+                        'gov-orange': '#ea580c',
+                        'gov-navy': '#1e3a8a',
+                        'gov-gold': '#ca8a04'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="{{ url_for('static', filename='images/emblem.png') }}" alt="Government of India" class="h-12 w-12">
+                    <div>
+                        <h1 class="text-xl font-semibold text-gray-900">AI-Driven LCA Tool</h1>
+                        <p class="text-sm text-gray-600">Ministry of Mines | JNARDDC</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <img src="{{ url_for('static', filename='images/jnarddc-logo.png') }}" alt="JNARDDC" class="h-10 w-auto">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav class="w-64 bg-gov-navy text-white shadow-lg">
+            <div class="p-6">
+                <div class="mb-8">
+                    <h2 class="text-lg font-semibold text-gray-100">Navigation</h2>
+                </div>
+                
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'dashboard' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('process_input') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'process_input' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-industry mr-3"></i>
+                            Process Input
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('lca_analysis') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'lca_analysis' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            LCA Analysis
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('visualization') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'visualization' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-project-diagram mr-3"></i>
+                            Visualization
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('reports') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'reports' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-file-alt mr-3"></i>
+                            Reports
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('settings') }}" 
+                           class="nav-link flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors {% if request.endpoint == 'settings' %}bg-gov-blue text-white{% else %}text-gray-300 hover:bg-gov-blue hover:text-white{% endif %}">
+                            <i class="fas fa-cog mr-3"></i>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="mt-12 p-4 bg-gov-blue/20 rounded-lg">
+                    <h3 class="text-sm font-semibold text-gray-100 mb-2">Support</h3>
+                    <p class="text-xs text-gray-300">For technical assistance, contact JNARDDC IT Support</p>
+                    <a href="mailto:support@jnarddc.gov.in" class="text-xs text-blue-300 hover:text-blue-200">support@jnarddc.gov.in</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-4">
+        <div class="px-6">
+            <div class="flex items-center justify-between">
+                <p class="text-sm text-gray-600">
+                    © 2024 Ministry of Mines, Government of India. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-6 text-sm text-gray-600">
+                    <a href="#" class="hover:text-gov-blue">Privacy Policy</a>
+                    <a href="#" class="hover:text-gov-blue">Terms of Use</a>
+                    <a href="#" class="hover:text-gov-blue">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

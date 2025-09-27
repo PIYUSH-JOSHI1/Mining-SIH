@@ -1,0 +1,10 @@
+# Government Logo Placeholders
+
+This directory should contain:
+- emblem.png (Government of India emblem)
+- jnarddc-logo.png (JNARDDC logo)
+
+For production use, replace with official government logos from:
+- Government of India: https://www.india.gov.in/
+- Ministry of Mines: https://www.mines.gov.in/
+- JNARDDC: Official organizational assets

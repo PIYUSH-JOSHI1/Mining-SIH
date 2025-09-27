@@ -1,0 +1,223 @@
+/* Government of India LCA Tool - Main Stylesheet */
+
+/* Custom Font */
+.font-inter {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Government Color Palette */
+:root {
+    --gov-blue: #1e40af;
+    --gov-green: #16a34a;
+    --gov-orange: #ea580c;
+    --gov-navy: #1e3a8a;
+    --gov-gold: #ca8a04;
+    --gov-light-blue: #dbeafe;
+    --gov-light-green: #dcfce7;
+    --gov-light-orange: #fed7aa;
+}
+
+/* Base Styles */
+body {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    letter-spacing: -0.01em;
+}
+
+/* Custom Button Styles */
+.btn-primary {
+    @apply bg-gov-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+}
+
+.btn-secondary {
+    @apply bg-gov-green hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+}
+
+.btn-outline {
+    @apply border-2 border-gov-blue text-gov-blue hover:bg-gov-blue hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
+}
+
+/* Form Styles */
+.form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent transition-all duration-200;
+}
+
+.form-label {
+    @apply block text-sm font-semibold text-gray-700 mb-2;
+}
+
+.form-select {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gov-blue focus:border-transparent bg-white transition-all duration-200;
+}
+
+/* Card Styles */
+.card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+}
+
+.card-header {
+    @apply border-b border-gray-200 pb-4 mb-6;
+}
+
+/* Navigation Styles */
+.nav-link.active {
+    @apply bg-gov-blue text-white;
+}
+
+.nav-link:hover {
+    @apply bg-gov-blue/80 text-white;
+}
+
+/* Progress Bar */
+.progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-2;
+}
+
+.progress-fill {
+    @apply bg-gov-green h-2 rounded-full transition-all duration-300 ease-in-out;
+}
+
+/* Status Badges */
+.status-badge-success {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800;
+}
+
+.status-badge-warning {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800;
+}
+
+.status-badge-error {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800;
+}
+
+.status-badge-info {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800;
+}
+
+/* Loading Spinner */
+.spinner {
+    @apply animate-spin h-5 w-5 text-gov-blue;
+}
+
+/* Chart Container */
+.chart-container {
+    @apply relative h-64 w-full;
+}
+
+/* Notification Styles */
+.notification {
+    @apply fixed top-4 right-4 max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 transform transition-all duration-300;
+}
+
+.notification.show {
+    @apply translate-x-0 opacity-100;
+}
+
+.notification.hide {
+    @apply translate-x-full opacity-0;
+}
+
+/* Data Table */
+.data-table {
+    @apply w-full divide-y divide-gray-200;
+}
+
+.data-table th {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.data-table td {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+/* Responsive Design Helpers */
+@media (max-width: 768px) {
+    .mobile-menu-button {
+        @apply block md:hidden;
+    }
+    
+    .desktop-nav {
+        @apply hidden md:block;
+    }
+    
+    .mobile-nav {
+        @apply block md:hidden;
+    }
+}
+
+/* Accessibility Improvements */
+.sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+}
+
+/* Focus States */
+*:focus {
+    @apply outline-none ring-2 ring-gov-blue ring-offset-2 ring-offset-white;
+}
+
+/* Smooth Animations */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in {
+    animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Government Emblem Styling */
+.gov-emblem {
+    @apply h-12 w-12 object-contain;
+}
+
+/* Print Styles */
+@media print {
+    .no-print {
+        @apply hidden;
+    }
+    
+    .print-break {
+        page-break-before: always;
+    }
+    
+    body {
+        @apply text-black bg-white;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+}

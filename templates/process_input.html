@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}Process Input - AI-Driven LCA Tool{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Process Input</h1>
+                <p class="text-gray-600 mt-1">Enter your metallurgical process details for LCA analysis</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="clearForm()" class="btn-outline">
+                    <i class="fas fa-eraser mr-2"></i>Clear Form
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Process Setup</h3>
+            <span class="text-sm text-gray-600">Step <span id="currentStep">1</span> of 4</span>
+        </div>
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 25%"></div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <form id="processForm" data-autosave="true" data-validate='{}' class="space-y-6">
+        <!-- Step 1: Basic Process Information -->
+        <div id="step1" class="form-step bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Basic Process Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="metalType" class="form-label">Metal Type *</label>
+                    <select id="metalType" name="metalType" class="form-select" required>
+                        <option value="">Select Metal Type</option>
+                        <option value="aluminium">Aluminium</option>
+                        <option value="copper">Copper</option>
+                        <option value="steel">Steel</option>
+                        <option value="zinc">Zinc</option>
+                        <option value="lead">Lead</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="processType" class="form-label">Process Type *</label>
+                    <select id="processType" name="processType" class="form-select" required>
+                        <option value="">Select Process Type</option>
+                        <option value="primary">Primary (Raw Material)</option>
+                        <option value="secondary">Secondary (Recycled)</option>
+                        <option value="hybrid">Hybrid (Mixed)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="productionCapacity" class="form-label">Production Capacity (tonnes/year) *</label>
+                    <input type="number" id="productionCapacity" name="productionCapacity" 
+                           class="form-input" min="1" step="0.01" required 
+                           placeholder="e.g., 10000">
+                </div>
+                
+                <div>
+                    <label for="location" class="form-label">Plant Location *</label>
+                    <select id="location" name="location" class="form-select" required>
+                        <option value="">Select State</option>
+                        <option value="andhra-pradesh">Andhra Pradesh</option>
+                        <option value="arunachal-pradesh">Arunachal Pradesh</option>
+                        <option value="assam">Assam</option>
+                        <option value="bihar">Bihar</option>
+                        <option value="chhattisgarh">Chhattisgarh</option>
+                        <option value="goa">Goa</option>
+                        <option value="gujarat">Gujarat</option>
+                        <option value="haryana">Haryana</option>
+                        <option value="himachal-pradesh">Himachal Pradesh</option>
+                        <option value="jharkhand">Jharkhand</option>
+                        <option value="karnataka">Karnataka</option>
+                        <option value="kerala">Kerala</option>
+                        <option value="madhya-pradesh">Madhya Pradesh</option>
+                        <option value="maharashtra">Maharashtra</option>
+                        <option value="manipur">Manipur</option>
+                        <option value="meghalaya">Meghalaya</option>
+                        <option value="mizoram">Mizoram</option>
+                        <option value="nagaland">Nagaland</option>
+                        <option value="odisha">Odisha</option>
+                        <option value="punjab">Punjab</option>
+                        <option value="rajasthan">Rajasthan</option>
+                        <option value="sikkim">Sikkim</option>
+                        <option value="tamil-nadu">Tamil Nadu</option>
+                        <option value="telangana">Telangana</option>
+                        <option value="tripura">Tripura</option>
+                        <option value="uttar-pradesh">Uttar Pradesh</option>
+                        <option value="uttarakhand">Uttarakhand</option>
+                        <option value="west-bengal">West Bengal</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Energy and Resource Consumption -->
+        <div id="step2" class="form-step bg-white rounded-lg shadow-sm border border-gray-200 p-6" style="display: none;">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Energy and Resource Consumption</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="energyConsumption" class="form-label">Energy Consumption (kWh/tonne) *</label>
+                    <input type="number" id="energyConsumption" name="energyConsumption" 
+                           class="form-input" min="0" step="0.01" required 
+                           placeholder="e.g., 500">
+                    <p class="text-sm text-gray-500 mt-1">Total energy per tonne of production</p>
+                </div>
+                
+                <div>
+                    <label for="electricitySource" class="form-label">Primary Electricity Source *</label>
+                    <select id="electricitySource" name="electricitySource" class="form-select" required>
+                        <option value="">Select Source</option>
+                        <option value="grid-coal">Grid (Coal Heavy)</option>
+                        <option value="grid-mixed">Grid (Mixed Sources)</option>
+                        <option value="renewable">Renewable Energy</option>
+                        <option value="natural-gas">Natural Gas</option>
+                        <option value="nuclear">Nuclear</option>
+                        <option value="captive-coal">Captive Coal Plant</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="waterUsage" class="form-label">Water Usage (L/tonne)</label>
+                    <input type="number" id="waterUsage" name="waterUsage" 
+                           class="form-input" min="0" step="0.01" 
+                           placeholder="e.g., 2000">
+                    <p class="text-sm text-gray-500 mt-1">Fresh water consumption per tonne</p>
+                </div>
+                
+                <div>
+                    <label for="rawMaterialSource" class="form-label">Raw Material Source *</label>
+                    <select id="rawMaterialSource" name="rawMaterialSource" class="form-select" required>
+                        <option value="">Select Source</option>
+                        <option value="domestic-ore">Domestic Ore</option>
+                        <option value="imported-ore">Imported Ore</option>
+                        <option value="domestic-scrap">Domestic Scrap</option>
+                        <option value="imported-scrap">Imported Scrap</option>
+                        <option value="mixed">Mixed Sources</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Transport and Logistics -->
+        <div id="step3" class="form-step bg-white rounded-lg shadow-sm border border-gray-200 p-6" style="display: none;">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Transport and Logistics</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="transportDistance" class="form-label">Average Transport Distance (km) *</label>
+                    <input type="number" id="transportDistance" name="transportDistance" 
+                           class="form-input" min="0" step="1" required 
+                           placeholder="e.g., 300">
+                    <p class="text-sm text-gray-500 mt-1">From raw material source to plant</p>
+                </div>
+                
+                <div>
+                    <label for="transportMode" class="form-label">Primary Transport Mode *</label>
+                    <select id="transportMode" name="transportMode" class="form-select" required>
+                        <option value="">Select Mode</option>
+                        <option value="road-truck">Road (Truck)</option>
+                        <option value="rail">Railway</option>
+                        <option value="waterway">Waterway</option>
+                        <option value="pipeline">Pipeline</option>
+                        <option value="mixed">Mixed Transport</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="distributionDistance" class="form-label">Distribution Distance (km)</label>
+                    <input type="number" id="distributionDistance" name="distributionDistance" 
+                           class="form-input" min="0" step="1" 
+                           placeholder="e.g., 500">
+                    <p class="text-sm text-gray-500 mt-1">From plant to end customers</p>
+                </div>
+                
+                <div>
+                    <label for="packagingType" class="form-label">Packaging Type</label>
+                    <select id="packagingType" name="packagingType" class="form-select">
+                        <option value="">Select Packaging</option>
+                        <option value="minimal">Minimal Packaging</option>
+                        <option value="standard">Standard Packaging</option>
+                        <option value="heavy-duty">Heavy Duty Packaging</option>
+                        <option value="bulk">Bulk (No Packaging)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4: End-of-Life and Circularity -->
+        <div id="step4" class="form-step bg-white rounded-lg shadow-sm border border-gray-200 p-6" style="display: none;">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">End-of-Life and Circularity</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="recoveryRate" class="form-label">Current Recovery Rate (%) *</label>
+                    <input type="number" id="recoveryRate" name="recoveryRate" 
+                           class="form-input" min="0" max="100" step="0.1" required 
+                           placeholder="e.g., 75">
+                    <p class="text-sm text-gray-500 mt-1">Percentage of material currently recovered</p>
+                </div>
+                
+                <div>
+                    <label for="endOfLifeScenario" class="form-label">Primary End-of-Life Scenario *</label>
+                    <select id="endOfLifeScenario" name="endOfLifeScenario" class="form-select" required>
+                        <option value="">Select Scenario</option>
+                        <option value="recycling">Recycling</option>
+                        <option value="reuse">Direct Reuse</option>
+                        <option value="refurbishing">Refurbishing</option>
+                        <option value="landfill">Landfill Disposal</option>
+                        <option value="incineration">Incineration with Energy Recovery</option>
+                        <option value="mixed">Mixed Scenarios</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="recycledContentInput" class="form-label">Recycled Content Input (%)</label>
+                    <input type="number" id="recycledContentInput" name="recycledContentInput" 
+                           class="form-input" min="0" max="100" step="0.1" 
+                           placeholder="e.g., 30">
+                    <p class="text-sm text-gray-500 mt-1">Percentage of recycled material in input</p>
+                </div>
+                
+                <div>
+                    <label for="productLifespan" class="form-label">Expected Product Lifespan (years)</label>
+                    <input type="number" id="productLifespan" name="productLifespan" 
+                           class="form-input" min="1" step="0.1" 
+                           placeholder="e.g., 25">
+                    <p class="text-sm text-gray-500 mt-1">Average lifespan of end products</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Navigation -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex justify-between items-center">
+                <button type="button" id="prevBtn" onclick="changeStep(-1)" 
+                        class="btn-outline" style="display: none;">
+                    <i class="fas fa-arrow-left mr-2"></i>Previous
+                </button>
+                
+                <div class="flex space-x-3">
+                    <button type="button" onclick="saveAsDraft()" class="btn-outline">
+                        <i class="fas fa-save mr-2"></i>Save as Draft
+                    </button>
+                    
+                    <button type="button" id="nextBtn" onclick="changeStep(1)" class="btn-primary">
+                        Next<i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    
+                    <button type="submit" id="submitBtn" class="btn-secondary" style="display: none;">
+                        <i class="fas fa-play mr-2"></i>Run LCA Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- AI Assistance Panel -->
+    <div class="bg-gradient-to-r from-gov-blue to-gov-navy text-white rounded-lg shadow-lg p-6">
+        <div class="flex items-center mb-4">
+            <i class="fas fa-robot text-2xl mr-3"></i>
+            <h3 class="text-lg font-semibold">AI Assistant</h3>
+        </div>
+        <p class="text-blue-100 mb-4">
+            Don't have all the data? Our AI will intelligently estimate missing parameters based on your industry, 
+            location, and process type to provide accurate LCA results.
+        </p>
+        <div class="flex items-center space-x-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-400 text-green-900">
+                <i class="fas fa-check mr-1"></i>
+                Smart Estimation
+            </span>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-400 text-blue-900">
+                <i class="fas fa-database mr-1"></i>
+                Industry Benchmarks
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/process_input.js') }}"></script>
+{% endblock %}

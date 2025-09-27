@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - AI-Driven LCA Tool{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">System Settings</h1>
+                <p class="text-gray-600 mt-1">Configure application preferences and system parameters</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Sections -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- User Preferences -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">User Preferences</h3>
+            <form class="space-y-4">
+                <div>
+                    <label class="form-label">Default Metal Type</label>
+                    <select class="form-select">
+                        <option value="aluminium">Aluminium</option>
+                        <option value="copper">Copper</option>
+                        <option value="steel">Steel</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Units System</label>
+                    <select class="form-select">
+                        <option value="metric">Metric (SI)</option>
+                        <option value="imperial">Imperial</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Language</label>
+                    <select class="form-select">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Save Preferences</button>
+            </form>
+        </div>
+
+        <!-- Data Management -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Data Management</h3>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Auto-save Forms</span>
+                    <input type="checkbox" checked class="form-checkbox">
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Data Validation</span>
+                    <input type="checkbox" checked class="form-checkbox">
+                </div>
+                <button onclick="exportData('backup')" class="btn-outline w-full">
+                    <i class="fas fa-download mr-2"></i>Export Backup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">System Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <div class="text-sm text-gray-600">Version</div>
+                <div class="font-medium">v1.0.0</div>
+            </div>
+            <div>
+                <div class="text-sm text-gray-600">Last Updated</div>
+                <div class="font-medium">March 2024</div>
+            </div>
+            <div>
+                <div class="text-sm text-gray-600">Organization</div>
+                <div class="font-medium">JNARDDC, Ministry of Mines</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

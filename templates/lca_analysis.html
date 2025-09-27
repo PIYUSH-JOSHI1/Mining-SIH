@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}LCA Analysis - AI-Driven LCA Tool{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">LCA Analysis Results</h1>
+                <p class="text-gray-600 mt-1">Comprehensive life cycle assessment and circularity analysis</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="exportResults()" class="btn-outline">
+                    <i class="fas fa-download mr-2"></i>Export Results
+                </button>
+                <button onclick="startNewAnalysis()" class="btn-primary">
+                    <i class="fas fa-plus mr-2"></i>New Analysis
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Status -->
+    <div id="analysisStatus" class="bg-white rounded-lg shadow-sm border border-gray-200 p-6" style="display: none;">
+        <div class="flex items-center justify-center py-8">
+            <div class="text-center">
+                <div class="spinner mx-auto mb-4"></div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">AI Processing Your Data</h3>
+                <p class="text-gray-600">Analyzing environmental impact and circularity metrics...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Container -->
+    <div id="resultsContainer" class="space-y-6">
+        <!-- Overall Score Card -->
+        <div class="bg-gradient-to-r from-gov-blue to-gov-navy text-white rounded-lg shadow-lg p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-4xl font-bold mb-2" id="sustainabilityGrade">A</div>
+                    <div class="text-lg font-semibold mb-1">Sustainability Grade</div>
+                    <div class="text-blue-200 text-sm">Overall Performance</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold mb-2" id="circularityScore">78.5</div>
+                    <div class="text-lg font-semibold mb-1">Circularity Index</div>
+                    <div class="text-blue-200 text-sm">Resource Efficiency</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold mb-2" id="co2Reduction">-35%</div>
+                    <div class="text-lg font-semibold mb-1">Potential Savings</div>
+                    <div class="text-blue-200 text-sm">CO₂ Reduction</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cloud text-red-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">CO₂ Footprint</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="co2Footprint">-</p>
+                        <p class="text-xs text-gray-500">tonnes CO₂e</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-yellow-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Energy Intensity</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="energyIntensity">-</p>
+                        <p class="text-xs text-gray-500">kWh/tonne</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tint text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Water Footprint</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="waterFootprint">-</p>
+                        <p class="text-xs text-gray-500">L/tonne</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-recycle text-green-600 text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Recovery Potential</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="recoveryPotential">-</p>
+                        <p class="text-xs text-gray-500">%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impact Categories -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Environmental Impact -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Environmental Impact Breakdown</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-red-500 rounded mr-3"></div>
+                            <span class="text-sm text-gray-600">Raw Material Extraction</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-gray-900">45%</div>
+                            <div class="w-24 bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-orange-500 rounded mr-3"></div>
+                            <span class="text-sm text-gray-600">Processing & Manufacturing</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-gray-900">35%</div>
+                            <div class="w-24 bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-orange-500 h-2 rounded-full" style="width: 35%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-yellow-500 rounded mr-3"></div>
+                            <span class="text-sm text-gray-600">Transportation</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-gray-900">15%</div>
+                            <div class="w-24 bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-500 rounded mr-3"></div>
+                            <span class="text-sm text-gray-600">End-of-Life</span>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-medium text-gray-900">5%</div>
+                            <div class="w-24 bg-gray-200 rounded-full h-2 mt-1">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 5%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Circularity Metrics -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Circularity Performance</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Material Recovery Rate</span>
+                            <span class="text-sm font-medium text-gray-900" id="materialRecoveryRate">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-green-500" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Recyclability Score</span>
+                            <span class="text-sm font-medium text-gray-900" id="recyclabilityScore">82%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-blue-500" style="width: 82%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm text-gray-600">Resource Efficiency</span>
+                            <span class="text-sm font-medium text-gray-900" id="resourceEfficiency">68%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill bg-orange-500" style="width: 68%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-lightbulb text-green-600 mr-2"></i>
+                        <span class="text-sm font-medium text-green-800">Circular Economy Opportunity</span>
+                    </div>
+                    <p class="text-sm text-green-700 mt-1">
+                        Your process shows strong potential for circular improvements. Focus on increasing material recovery rates.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">AI-Generated Recommendations</h3>
+            <div id="recommendationsList" class="space-y-4">
+                <!-- Recommendations will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Benchmark Comparison -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Industry Benchmark Comparison</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center p-4 bg-red-50 rounded-lg">
+                    <div class="text-2xl font-bold text-red-600 mb-2">Below Average</div>
+                    <div class="text-sm text-gray-600">CO₂ Emissions</div>
+                    <div class="text-xs text-gray-500 mt-1">25% above industry average</div>
+                </div>
+                
+                <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                    <div class="text-2xl font-bold text-yellow-600 mb-2">Average</div>
+                    <div class="text-sm text-gray-600">Energy Efficiency</div>
+                    <div class="text-xs text-gray-500 mt-1">Within industry range</div>
+                </div>
+                
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600 mb-2">Above Average</div>
+                    <div class="text-sm text-gray-600">Circularity</div>
+                    <div class="text-xs text-gray-500 mt-1">15% above industry average</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No Results State -->
+    <div id="noResultsState" class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+        <div class="text-gray-400 mb-4">
+            <i class="fas fa-chart-line text-6xl"></i>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">No Analysis Available</h3>
+        <p class="text-gray-600 mb-6">Start by inputting your process data to generate an LCA analysis.</p>
+        <a href="{{ url_for('process_input') }}" class="btn-primary">
+            <i class="fas fa-plus mr-2"></i>Start New Analysis
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/lca_analysis.js') }}"></script>
+{% endblock %}

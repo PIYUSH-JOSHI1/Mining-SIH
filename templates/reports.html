@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - AI-Driven LCA Tool{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
+                <p class="text-gray-600 mt-1">Generate comprehensive reports and export your LCA data</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="generateReport()" class="btn-primary">
+                    <i class="fas fa-file-pdf mr-2"></i>Generate PDF Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Templates -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Executive Summary Report -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gov-blue rounded-lg flex items-center justify-center">
+                    <i class="fas fa-chart-pie text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Executive
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Executive Summary</h3>
+            <p class="text-gray-600 text-sm mb-4">High-level overview of sustainability performance and key recommendations for decision makers.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>5-10 pages</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-users mr-2 text-gray-400"></i>
+                    <span>For management & stakeholders</span>
+                </div>
+            </div>
+            <button onclick="generateExecutiveReport()" class="w-full btn-outline mt-4">
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Technical Assessment -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gov-green rounded-lg flex items-center justify-center">
+                    <i class="fas fa-cogs text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Technical
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Technical Assessment</h3>
+            <p class="text-gray-600 text-sm mb-4">Detailed technical analysis with methodologies, data sources, and comprehensive impact calculations.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>20-30 pages</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-user-cog mr-2 text-gray-400"></i>
+                    <span>For engineers & analysts</span>
+                </div>
+            </div>
+            <button onclick="generateTechnicalReport()" class="w-full btn-outline mt-4">
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Compliance Report -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gov-orange rounded-lg flex items-center justify-center">
+                    <i class="fas fa-certificate text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                    Compliance
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Regulatory Compliance</h3>
+            <p class="text-gray-600 text-sm mb-4">Compliance assessment against Indian environmental regulations and international standards.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>15-20 pages</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-balance-scale mr-2 text-gray-400"></i>
+                    <span>For regulatory submissions</span>
+                </div>
+            </div>
+            <button onclick="generateComplianceReport()" class="w-full btn-outline mt-4">
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Circularity Report -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gov-navy rounded-lg flex items-center justify-center">
+                    <i class="fas fa-recycle text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                    Circularity
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Circularity Assessment</h3>
+            <p class="text-gray-600 text-sm mb-4">Focused analysis on circular economy opportunities, material flows, and waste minimization strategies.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>12-15 pages</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-leaf mr-2 text-gray-400"></i>
+                    <span>For sustainability teams</span>
+                </div>
+            </div>
+            <button onclick="generateCircularityReport()" class="w-full btn-outline mt-4">
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Benchmark Report -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gov-gold rounded-lg flex items-center justify-center">
+                    <i class="fas fa-medal text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                    Benchmark
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Industry Benchmark</h3>
+            <p class="text-gray-600 text-sm mb-4">Comparison with industry peers, best practices, and performance benchmarking analysis.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>8-12 pages</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-chart-bar mr-2 text-gray-400"></i>
+                    <span>For competitive analysis</span>
+                </div>
+            </div>
+            <button onclick="generateBenchmarkReport()" class="w-full btn-outline mt-4">
+                Generate Report
+            </button>
+        </div>
+
+        <!-- Custom Report -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow border-dashed">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-gray-300 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-plus text-white text-xl"></i>
+                </div>
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                    Custom
+                </span>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Custom Report</h3>
+            <p class="text-gray-600 text-sm mb-4">Create a customized report with specific sections, metrics, and focus areas as per your requirements.</p>
+            <div class="space-y-2">
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                    <span>Variable length</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-600">
+                    <i class="fas fa-edit mr-2 text-gray-400"></i>
+                    <span>Customizable sections</span>
+                </div>
+            </div>
+            <button onclick="createCustomReport()" class="w-full btn-outline mt-4">
+                Create Custom
+            </button>
+        </div>
+    </div>
+
+    <!-- Data Export Section -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-6">Data Export & Integration</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Raw Data Export -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-database text-gov-blue text-xl mr-3"></i>
+                    <h4 class="font-semibold text-gray-900">Raw Data Export</h4>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Export all collected data in various formats for further analysis or integration.</p>
+                <div class="space-y-2">
+                    <button onclick="exportData('csv')" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-file-csv mr-2"></i>CSV Format
+                    </button>
+                    <button onclick="exportData('excel')" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-file-excel mr-2"></i>Excel Format
+                    </button>
+                    <button onclick="exportData('json')" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-code mr-2"></i>JSON Format
+                    </button>
+                </div>
+            </div>
+
+            <!-- API Integration -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-plug text-gov-green text-xl mr-3"></i>
+                    <h4 class="font-semibold text-gray-900">API Integration</h4>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Connect with external systems and enterprise software for automated data exchange.</p>
+                <div class="space-y-2">
+                    <button onclick="showApiDocumentation()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-book mr-2"></i>API Documentation
+                    </button>
+                    <button onclick="generateApiKey()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-key mr-2"></i>Generate API Key
+                    </button>
+                    <button onclick="testConnection()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-link mr-2"></i>Test Connection
+                    </button>
+                </div>
+            </div>
+
+            <!-- Automated Reports -->
+            <div class="border border-gray-200 rounded-lg p-4">
+                <div class="flex items-center mb-3">
+                    <i class="fas fa-calendar-check text-gov-orange text-xl mr-3"></i>
+                    <h4 class="font-semibold text-gray-900">Scheduled Reports</h4>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Set up automated report generation and delivery on a regular schedule.</p>
+                <div class="space-y-2">
+                    <button onclick="setupSchedule()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-clock mr-2"></i>Setup Schedule
+                    </button>
+                    <button onclick="viewScheduledReports()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-list mr-2"></i>View Schedules
+                    </button>
+                    <button onclick="emailSettings()" class="w-full text-left px-3 py-2 text-sm bg-gray-50 rounded hover:bg-gray-100">
+                        <i class="fas fa-envelope mr-2"></i>Email Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report History -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Report History</h3>
+            <button onclick="refreshHistory()" class="text-gray-400 hover:text-gray-600">
+                <i class="fas fa-refresh"></i>
+            </button>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="data-table">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th>Report Type</th>
+                        <th>Generated Date</th>
+                        <th>File Size</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reportHistoryBody">
+                    <tr>
+                        <td>
+                            <div class="flex items-center">
+                                <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                <span class="font-medium">Executive Summary</span>
+                            </div>
+                        </td>
+                        <td class="text-gray-600">2024-03-15 14:30</td>
+                        <td class="text-gray-600">2.3 MB</td>
+                        <td>
+                            <span class="status-badge-success">Completed</span>
+                        </td>
+                        <td>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="downloadReport('exec_2024_03_15')" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                                <button onclick="shareReport('exec_2024_03_15')" class="text-green-600 hover:text-green-800 text-sm">
+                                    <i class="fas fa-share mr-1"></i>Share
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex items-center">
+                                <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                <span class="font-medium">Technical Assessment</span>
+                            </div>
+                        </td>
+                        <td class="text-gray-600">2024-03-14 09:15</td>
+                        <td class="text-gray-600">5.7 MB</td>
+                        <td>
+                            <span class="status-badge-success">Completed</span>
+                        </td>
+                        <td>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="downloadReport('tech_2024_03_14')" class="text-blue-600 hover:text-blue-800 text-sm">
+                                    <i class="fas fa-download mr-1"></i>Download
+                                </button>
+                                <button onclick="shareReport('tech_2024_03_14')" class="text-green-600 hover:text-green-800 text-sm">
+                                    <i class="fas fa-share mr-1"></i>Share
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="flex items-center">
+                                <i class="fas fa-spinner fa-spin text-blue-500 mr-2"></i>
+                                <span class="font-medium">Circularity Assessment</span>
+                            </div>
+                        </td>
+                        <td class="text-gray-600">2024-03-15 16:45</td>
+                        <td class="text-gray-400">Generating...</td>
+                        <td>
+                            <span class="status-badge-warning">Processing</span>
+                        </td>
+                        <td>
+                            <button onclick="cancelReport('circ_2024_03_15')" class="text-red-600 hover:text-red-800 text-sm">
+                                <i class="fas fa-times mr-1"></i>Cancel
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Government Compliance Notice -->
+    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div class="flex items-start">
+            <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+                <h3 class="text-lg font-semibold text-blue-900 mb-2">Government of India Compliance</h3>
+                <p class="text-blue-800 text-sm mb-3">
+                    All reports generated through this system comply with Indian environmental regulations including the Environment Impact Assessment (EIA) Notification 2006, Pollution Control Board guidelines, and Ministry of Environment, Forest and Climate Change standards.
+                </p>
+                <div class="flex items-center space-x-6 text-sm">
+                    <div class="flex items-center text-blue-700">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>ISO 14040/14044 Compliant</span>
+                    </div>
+                    <div class="flex items-center text-blue-700">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>BIS Standards Aligned</span>
+                    </div>
+                    <div class="flex items-center text-blue-700">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>CPCB Guidelines</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}

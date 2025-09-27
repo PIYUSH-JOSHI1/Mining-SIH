@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}Visualization - AI-Driven LCA Tool{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Visualization Dashboard</h1>
+                <p class="text-gray-600 mt-1">Interactive charts and flow diagrams for LCA insights</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <select id="visualizationType" class="form-select" onchange="changeVisualization()">
+                    <option value="sankey">Sankey Flow Diagram</option>
+                    <option value="lifecycle">Life Cycle Stages</option>
+                    <option value="comparison">Scenario Comparison</option>
+                    <option value="trends">Trend Analysis</option>
+                </select>
+                <button onclick="exportChart()" class="btn-outline">
+                    <i class="fas fa-image mr-2"></i>Export Chart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualization Controls -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label for="metalTypeFilter" class="form-label">Metal Type</label>
+                <select id="metalTypeFilter" class="form-select" onchange="updateVisualization()">
+                    <option value="all">All Metals</option>
+                    <option value="aluminium">Aluminium</option>
+                    <option value="copper">Copper</option>
+                    <option value="steel">Steel</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="processTypeFilter" class="form-label">Process Type</label>
+                <select id="processTypeFilter" class="form-select" onchange="updateVisualization()">
+                    <option value="all">All Processes</option>
+                    <option value="primary">Primary</option>
+                    <option value="secondary">Secondary</option>
+                    <option value="hybrid">Hybrid</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="metricFilter" class="form-label">Metric</label>
+                <select id="metricFilter" class="form-select" onchange="updateVisualization()">
+                    <option value="co2">CO₂ Footprint</option>
+                    <option value="energy">Energy Consumption</option>
+                    <option value="water">Water Usage</option>
+                    <option value="circularity">Circularity Index</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="timeRange" class="form-label">Time Range</label>
+                <select id="timeRange" class="form-select" onchange="updateVisualization()">
+                    <option value="last_week">Last Week</option>
+                    <option value="last_month">Last Month</option>
+                    <option value="last_quarter">Last Quarter</option>
+                    <option value="last_year">Last Year</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Visualization Area -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Primary Chart -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900" id="chartTitle">Material Flow Analysis</h3>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="toggleFullscreen()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="primaryChart" class="chart-container h-96">
+                    <!-- Chart will be rendered here -->
+                    <canvas id="mainCanvas" class="w-full h-full"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panels -->
+        <div class="space-y-6">
+            <!-- Key Insights -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Key Insights</h3>
+                <div class="space-y-4" id="keyInsights">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-gov-blue rounded-full mt-2"></div>
+                        <div class="text-sm">
+                            <div class="font-medium text-gray-900">Hotspot Identified</div>
+                            <div class="text-gray-600 mt-1">Raw material extraction accounts for 65% of total environmental impact</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-gov-green rounded-full mt-2"></div>
+                        <div class="text-sm">
+                            <div class="font-medium text-gray-900">Opportunity Found</div>
+                            <div class="text-gray-600 mt-1">Switching to rail transport could reduce logistics emissions by 45%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 bg-gov-orange rounded-full mt-2"></div>
+                        <div class="text-sm">
+                            <div class="font-medium text-gray-900">Benchmark</div>
+                            <div class="text-gray-600 mt-1">Performance is 15% above industry average for circularity metrics</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Current Analysis</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Material Efficiency</span>
+                        <span class="text-sm font-medium text-gov-green">87%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Energy Recovery</span>
+                        <span class="text-sm font-medium text-gov-blue">72%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Waste Minimization</span>
+                        <span class="text-sm font-medium text-gov-orange">65%</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Circular Index</span>
+                        <span class="text-sm font-medium text-gov-gold">78%</span>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gov-blue">B+</div>
+                        <div class="text-sm text-gray-600">Overall Grade</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Charts Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Impact Categories -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Impact Categories</h3>
+            <div id="impactChart" class="h-64">
+                <canvas id="impactCanvas" class="w-full h-full"></canvas>
+            </div>
+        </div>
+
+        <!-- Circularity Flow -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Circularity Flow</h3>
+            <div id="circularityChart" class="h-64">
+                <canvas id="circularityCanvas" class="w-full h-full"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scenario Comparison -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold text-gray-900">Scenario Comparison</h3>
+            <div class="flex items-center space-x-3">
+                <button onclick="addScenario()" class="btn-outline text-sm">
+                    <i class="fas fa-plus mr-2"></i>Add Scenario
+                </button>
+                <button onclick="compareScenarios()" class="btn-primary text-sm">
+                    <i class="fas fa-balance-scale mr-2"></i>Compare
+                </button>
+            </div>
+        </div>
+        
+        <div id="scenarioTable" class="overflow-x-auto">
+            <table class="data-table">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Process Type</th>
+                        <th>CO₂ Footprint (kg/tonne)</th>
+                        <th>Energy (kWh/tonne)</th>
+                        <th>Circularity Index (%)</th>
+                        <th>Cost Impact</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="scenarioTableBody">
+                    <tr>
+                        <td class="font-medium">Current Process</td>
+                        <td>Primary</td>
+                        <td class="text-red-600">12,500</td>
+                        <td class="text-orange-600">15,000</td>
+                        <td class="text-yellow-600">65%</td>
+                        <td class="text-gray-600">Baseline</td>
+                        <td>
+                            <button class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Optimized Process</td>
+                        <td>Hybrid</td>
+                        <td class="text-green-600">8,100</td>
+                        <td class="text-green-600">11,200</td>
+                        <td class="text-green-600">82%</td>
+                        <td class="text-green-600">-₹25L/year</td>
+                        <td>
+                            <button class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Interactive Legend -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Legend & Controls</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <h4 class="font-medium text-gray-900 mb-2">Process Stages</h4>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-red-500 rounded mr-3"></div>
+                        <span class="text-sm text-gray-600">Extraction</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-orange-500 rounded mr-3"></div>
+                        <span class="text-sm text-gray-600">Processing</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-yellow-500 rounded mr-3"></div>
+                        <span class="text-sm text-gray-600">Transport</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-green-500 rounded mr-3"></div>
+                        <span class="text-sm text-gray-600">End-of-Life</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-medium text-gray-900 mb-2">Impact Levels</h4>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <div class="w-4 h-2 bg-gradient-to-r from-green-500 to-red-500 mr-3"></div>
+                        <span class="text-sm text-gray-600">Low to High</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-medium text-gray-900 mb-2">Flow Direction</h4>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-arrow-right text-gov-blue mr-3"></i>
+                        <span class="text-sm text-gray-600">Material Flow</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-recycle text-gov-green mr-3"></i>
+                        <span class="text-sm text-gray-600">Recycling Loop</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="font-medium text-gray-900 mb-2">Data Quality</h4>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-gov-blue rounded-full mr-3"></div>
+                        <span class="text-sm text-gray-600">Measured Data</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-gov-orange rounded-full mr-3 opacity-60"></div>
+                        <span class="text-sm text-gray-600">AI Estimated</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Chart.js for data visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/visualization.js') }}"></script>
+{% endblock %}
